@@ -8,18 +8,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Install dependencies
         run: npm install
+
       - name: Create new branch
         run: |
           git config --local user.email "mkflow27@gmail.com"
           git config --local user.name "mkflow27"
           git checkout -b review/issue-${{ github.event.issue.number }}
+
       - name: Parse Issue
         id: parse-issue
         uses: GrantBirki/issue-template-parser@v7.0.4
         with:
           body: ${{ github.event.issue.body }}
+
       - name: process issue content
         id: process-issue
         run: npx tsx scripts/process-issue.ts
@@ -36,6 +40,7 @@ jobs:
           HYPEREVM_RPC_URL: ${{ secrets.HYPEREVM_RPC_URL }}
           HYPERNATIVE_CLIENT_ID: ${{ secrets.HYPERNATIVE_CLIENT_ID }}
           HYPERNATIVE_CLIENT_SECRET: ${{ secrets.HYPERNATIVE_CLIENT_SECRET }}
+
       - name: Commit changes
         run: |
           git add .
@@ -44,6 +49,7 @@ jobs:
             exit 0
           else
             git commit -m "Add review for issue #${{ github.event.issue.number }}"
+            git fetch origin
             git push origin review/issue-${{ github.event.issue.number }}
           fi
 

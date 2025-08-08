@@ -43,6 +43,12 @@ jobs:
           HYPERNATIVE_CLIENT_ID: ${{ secrets.HYPERNATIVE_CLIENT_ID }}
           HYPERNATIVE_CLIENT_SECRET: ${{ secrets.HYPERNATIVE_CLIENT_SECRET }}
 
+      - name: Create sample file
+        id: random-file
+        run: |
+          echo "Lorem ipsum dolorum." > test-file-${{ github.event.issue.number }}.txt
+          echo "Created test file: test-file-${{ github.event.issue.number }}.txt"
+
       - name: Commit and push changes
         run: |
           git add .

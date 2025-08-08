@@ -8,15 +8,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
         run: npm install
-
-      - name: Create new branch
-        run: |
-          git config --local user.email "mkflow27@gmail.com"
-          git config --local user.name "mkflow27"
-          git checkout -b review/issue-${{ github.event.issue.number }}
 
       - name: Parse Issue
         id: parse-issue
@@ -24,7 +20,13 @@ jobs:
         with:
           body: ${{ github.event.issue.body }}
 
-      - name: process issue content
+      - name: Create new branch
+        run: |
+          git config --local user.email "mkflow27@gmail.com"
+          git config --local user.name "mkflow27"
+          git checkout -b review/issue-${{ github.event.issue.number }}
+
+      - name: Process issue content
         id: process-issue
         run: npx tsx scripts/process-issue.ts
         env:
@@ -41,24 +43,25 @@ jobs:
           HYPERNATIVE_CLIENT_ID: ${{ secrets.HYPERNATIVE_CLIENT_ID }}
           HYPERNATIVE_CLIENT_SECRET: ${{ secrets.HYPERNATIVE_CLIENT_SECRET }}
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           git add .
           if git diff --staged --quiet; then
             echo "No changes to commit"
-            exit 0
+            # Create empty commit to ensure branch exists
+            git commit --allow-empty -m "Empty commit for PR branch"
           else
             git commit -m "Add review for issue #${{ github.event.issue.number }}"
-            git fetch origin
-            git push origin review/issue-${{ github.event.issue.number }}
           fi
+          # Push the branch to origin so it exists for the PR action
+          git push origin review/issue-${{ github.event.issue.number }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          base: main
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: review/issue-${{ github.event.issue.number }}
+          base: main
           title: "Review: Rate Provider from Issue #${{ github.event.issue.number }}"
           body: |
             ## Automated Review Generated

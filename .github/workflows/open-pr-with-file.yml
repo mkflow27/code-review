@@ -21,3 +21,9 @@ jobs:
           git add .
           git commit -m "Create review"
           git push origin my-feature-branch
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7.0.8
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Create review"
+          body: "This pull request adds a sample review file."

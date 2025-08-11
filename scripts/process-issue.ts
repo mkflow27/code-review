@@ -41,7 +41,6 @@ interface IssueData {
 async function processIssue(issueJson: string) {
     // the issue is parsed via https://github.com/marketplace/actions/issue-template-parser
 
-
     const issueData: IssueData = JSON.parse(issueJson)
 
     // console.log('Processing issue data:', issueJson)
@@ -69,6 +68,11 @@ async function processIssue(issueJson: string) {
 
     // load the RPC URL from the environment variable
     const rpcUrl = process.env[`${issueData.network.toUpperCase()}_RPC_URL`]
+
+    console.log('rp', issueData.rate_provider_contract_address)
+    console.log('erc4626', issueData.erc4626_asset_contract_address)
+    console.log('network', network)
+    console.log('rpcUrl', rpcUrl)
 
     await writeReviewAndUpdateRegistry(
         issueData.rate_provider_contract_address,

@@ -331,42 +331,42 @@ class RateProviderDataService {
                 this.apiKey = process.env.ETHERSCAN_API_KEY
                     ? process.env.ETHERSCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`ETHERSCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'Gnosis':
                 this.apiKey = process.env.GNOSISSCAN_API_KEY
                     ? process.env.GNOSISSCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`GNOSISSCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'Base':
                 this.apiKey = process.env.BASESCAN_API_KEY
                     ? process.env.BASESCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`BASESCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'OP Mainnet':
                 this.apiKey = process.env.OPTIMISM_SCAN_API_KEY
                     ? process.env.OPTIMISM_SCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`OPTIMISM_SCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'Arbitrum One':
                 this.apiKey = process.env.ARBITRUM_SCAN_API_KEY
                     ? process.env.ARBITRUM_SCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`ARBITRUM_SCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'Fraxtal':
                 this.apiKey = process.env.FRAXSCAN_API_KEY
                     ? process.env.FRAXSCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`FRAXSCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'Avalanche':
@@ -376,14 +376,14 @@ class RateProviderDataService {
                 this.apiKey = process.env.SONICSCAN_API_KEY
                     ? process.env.SONICSCAN_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`SONICSCAN_API_KEY Environment variable is not set`)
                       })()
                 break
             case 'HyperEVM':
                 this.apiKey = process.env.HYPEREVM_API_KEY
                     ? process.env.HYPEREVM_API_KEY
                     : (() => {
-                          throw new Error(`Environment variable is not set`)
+                          throw new Error(`HYPEREVM_API_KEY Environment variable is not set`)
                       })()
                 break
             default:

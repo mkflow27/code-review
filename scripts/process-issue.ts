@@ -70,14 +70,14 @@ async function processIssue(issueJson: string) {
     const rpcUrl = process.env[`${issueData.network.toUpperCase()}_RPC_URL`]
 
     console.log('rp', issueData.rate_provider_contract_address)
-    console.log('erc4626', issueData.erc4626_asset_contract_address)
+    console.log('erc4626', issueData.asset_contract_address)
     console.log('network', network)
     console.log('rpcUrl', rpcUrl)
 
     await writeReviewAndUpdateRegistry(
         issueData.rate_provider_contract_address,
         network,
-        issueData.erc4626_asset_contract_address,
+        issueData.asset_contract_address,
         rpcUrl as string,
     )
     //await writeERC4626ReviewAndUpdateRegistry(erc4626Address, network, rpcUrl)

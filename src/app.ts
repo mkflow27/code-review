@@ -325,6 +325,7 @@ class RateProviderDataService {
      * Sets the API key based on the chain.
      * @param chain The chain to set the API key for.
      */
+    // TODO: This functionality is pretty much obsolete since Etherscan moved to API 2.0
     private setApiBasedOnChain(chain: Chain) {
         switch (chain.name) {
             case 'Ethereum':

@@ -85,5 +85,5 @@ async function processIssue(issueJson: string) {
 
 // Read from environment variable instead of command line
 const issueData = process.env.ISSUE_DATA || process.argv[2] || '{}'
-console.log('Issue data from environment:', issueData)
+//console.log('Issue data from environment:', issueData)
 processIssue(issueData)

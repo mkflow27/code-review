@@ -9,18 +9,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create branch
-        run: |
-          git config --local user.email "mkflow27@gmail.com"
-          git config --local user.name "mkflow27"
-          git checkout -b my-feature-branch
-      - name: Create review
+      - name: Create review file
         run: echo "Lorem ipsum dolor" > lorem-ipsum.txt
-      - name: Commit and push
-        run: |
-          git add .
-          git commit -m "Create review"
-          git push origin my-feature-branch
+
       - name: Create pull request
         uses: peter-evans/create-pull-request@v7.0.8
         with:
@@ -29,3 +20,6 @@ jobs:
           branch: my-feature-branch
           title: "Create review"
           body: "This pull request adds a sample review file."
+          commit-message: "Add lorem ipsum review file"
+          committer: mkflow27 <mkflow27@gmail.com>
+          author: mkflow27 <mkflow27@gmail.com>

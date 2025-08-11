@@ -1,0 +1,21 @@
+name: make pr
+on:
+  issues:
+    types: [opened, edited, reopened]
+jobs:
+  write-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create branch
+        run: |
+          git checkout -b my-feature-branch
+      - name: Create review
+        run: echo "Lorem ipsum dolor" > lorem-ipsum.txt
+      - name: Commit and push
+        run: |
+          git add .
+          git commit -m "Create review"
+          git push origin my-feature-branch

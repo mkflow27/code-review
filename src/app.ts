@@ -327,7 +327,7 @@ class RateProviderDataService {
      */
     // TODO: This functionality is pretty much obsolete since Etherscan moved to API 2.0
     private setApiBasedOnChain(chain: Chain) {
-        return process.env.ETHERSCAN_API_KEY
+        this.apiKey = process.env.ETHERSCAN_API_KEY
             ? process.env.ETHERSCAN_API_KEY
             : (() => {
                   throw new Error(`ETHERSCAN_API_KEY Environment variable is not set`)

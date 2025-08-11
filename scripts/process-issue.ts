@@ -1,5 +1,5 @@
 import { writeReviewAndUpdateRegistry as writeERC4626ReviewAndUpdateRegistry } from './write-erc4626-review'
-import { writeReviewAndUpdateRegistry } from './write-review'
+import { writeReviewAndUpdateRegistry } from '../src/utils/write-rp-review'
 
 import {
     base,

@@ -1821,12 +1821,17 @@
   "ethereum": {
     "0x9fA39387D479fd456367190c82739eD6dC86491D": {
       "asset": "0xF7DE3c70F2db39a188A81052d2f3C8e3e217822a",
-      "name": "Superform USDC Rate Provider",
+      "name": "SuperUSDCRateProvider.md",
       "summary": "safe",
-      "review": "./SuperformRateProviders.md",
+      "review": "./SuperUSDCRateProviderReviewc687.md",
       "warnings": [],
-      "factory": "0xFC541f8d8c5e907E236C8931F0Df9F58e0C259Ec",
-      "upgradeableComponents": []
+      "factory": "",
+      "upgradeableComponents": [
+        {
+          "entrypoint": "0xf7de3c70f2db39a188a81052d2f3c8e3e217822a",
+          "implementationReviewed": "0xbb51273d6c746910c7c06fe718f30c936170fed0"
+        }
+      ]
     },
     "0x1aCB59d7c5D23C0310451bcd7bA5AE46d18c108C": {
       "asset": "0xF1617882A71467534D14EEe865922de1395c9E89",

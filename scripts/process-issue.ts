@@ -42,6 +42,7 @@ interface IssueData {
     erc4626_asset_contract_address: Hex
     erc4626_asset_contract_audits: string
     erc4626_asset_contract_documentation: string
+    link_to_passing_fork_tests: string
     terms_and_conditions: {
         selected: string[]
         unselected: string[]
@@ -92,11 +93,6 @@ async function processIssue(issueJson: string) {
         },
     }
 
-    console.log('rp', issueData.rate_provider_contract_address)
-    console.log('erc4626', issueData.asset_contract_address)
-    console.log('network', network)
-    console.log('rpcUrl', rpcUrl)
-
     await writeReviewAndUpdateRegistry(
         issueData.rate_provider_contract_address,
         network,
@@ -110,7 +106,33 @@ async function processIssue(issueJson: string) {
     await createCustomAgents(issueData.rate_provider_contract_address, network)
 
     // Only continue with erc4626 review if
+
     //await writeERC4626ReviewAndUpdateRegistry(erc4626Address, network, rpcUrl)
+    if (
+        issueData.additional_contract_information.selected.includes(
+            'If so, is the intention for this ERC4626 asset to be boosted?',
+        )
+    ) {
+        await writeERC4626ReviewAndUpdateRegistry(
+            issueData.erc4626_asset_contract_address,
+            network,
+            rpcUrl,
+            issueData.erc4626_asset_contract_audits, //link to audits
+            issueData.erc4626_asset_contract_documentation, //written docs excerpt
+            issueData.link_to_passing_fork_tests, // are fork tests passing?
+            issueData.erc4626_asset_contract_documentation, //link to passing fork tests
+            issueData.additional_contract_information.selected.includes('If so, is the Buffer already initialized') &&
+                issueData.link_to_passing_fork_tests
+                ? true
+                : false,
+            issueData.additional_contract_information.selected.includes(
+                'If so, shall the underlying asset be used to add/remove liquidity in a pool if possible? (i.e. add USDC for waUSDC)',
+            ),
+            issueData.additional_contract_information.selected.includes(
+                'If so, shall the wrapped asset also be used to add/remove liquidity in a pool? (i.e. add waUSDC directly)',
+            ),
+        )
+    }
 }
 
 // Read from environment variable instead of command line

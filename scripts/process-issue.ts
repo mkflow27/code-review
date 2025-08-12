@@ -1,5 +1,6 @@
 import { writeReviewAndUpdateRegistry as writeERC4626ReviewAndUpdateRegistry } from './write-erc4626-review'
 import { writeReviewAndUpdateRegistry } from '../src/utils/write-rp-review'
+import { createCustomAgents } from 'utils'
 
 import {
     base,
@@ -19,6 +20,15 @@ import {
 import { hyperEvm } from '../src/utils/customChains'
 import { Hex } from 'viem'
 
+/* 
+The additional_contract_information can contain the below strings
+
+"Does this rate provider pertain to an ERC4626 contract?",
+"If so, is the intention for this ERC4626 asset to be boosted?",
+"If so, shall the underlying asset be used to add/remove liquidity in a pool if possible? (i.e. add USDC for waUSDC)",
+"If so, shall the wrapped asset also be used to add/remove liquidity in a pool? (i.e. add waUSDC directly)",
+"Is a combined rate provider needed (i.e. wstETH in aave)?"
+*/
 interface IssueData {
     additional_contract_information: {
         selected: string[]
@@ -67,7 +77,20 @@ async function processIssue(issueJson: string) {
     let network = networks[issueData.network]
 
     // load the RPC URL from the environment variable
-    const rpcUrl = process.env[`${issueData.network.toUpperCase()}_RPC_URL`]
+    const rpcUrl = process.env[`${issueData.network.toUpperCase()}_RPC_URL`] as string
+
+    // replace the default network url with the passed one
+    // Override the default RPC URL
+    // Reason it must be an RPC URL that supports createAccessList
+    network = {
+        ...network,
+        rpcUrls: {
+            ...network.rpcUrls,
+            default: {
+                http: [rpcUrl],
+            },
+        },
+    }
 
     console.log('rp', issueData.rate_provider_contract_address)
     console.log('erc4626', issueData.asset_contract_address)
@@ -79,7 +102,14 @@ async function processIssue(issueJson: string) {
         network,
         issueData.asset_contract_address,
         rpcUrl as string,
+        issueData.protocol_documentation,
+        issueData.audits,
     )
+
+    // this step requires the registry to be read thus having the registry updated already
+    await createCustomAgents(issueData.rate_provider_contract_address, network)
+
+    // Only continue with erc4626 review if
     //await writeERC4626ReviewAndUpdateRegistry(erc4626Address, network, rpcUrl)
 }
 

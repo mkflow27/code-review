@@ -5884,6 +5884,15 @@
       ],
       "factory": "",
       "upgradeableComponents": []
+    },
+    "0xAB7dFEb522a237791077105a669D399662FD3dB3": {
+      "asset": "0x66c71204B70aE27BE6dC3eb41F9aF5868E68fDb6",
+      "name": "USDhl(Frontier)RateProvider.md",
+      "summary": "safe",
+      "review": "./USDhl(Frontier)RateProviderReview4fec.md",
+      "warnings": [],
+      "factory": "",
+      "upgradeableComponents": []
     }
   }
 }

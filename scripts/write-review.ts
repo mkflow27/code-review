@@ -1,12 +1,9 @@
-import path from 'path'
 import * as dotenv from 'dotenv'
 import yargs from 'yargs'
-import crypto from 'crypto'
 import { hideBin } from 'yargs/helpers'
 import { Address } from 'viem'
 
-import RateProviderDataService from '../src/app'
-import { template } from '../src/utils/template'
+import { createCustomAgents } from '../src'
 import {
     base,
     mainnet,
@@ -26,9 +23,6 @@ import {
 import { hyperEvm } from '../src/utils/customChains'
 import { writeReviewAndUpdateRegistry } from '../src/utils/write-rp-review'
 
-import HypernativeApi from '../src/services/hypernativeApi'
-import { doOnchainCallGetName } from '../src'
-
 dotenv.config()
 const fs = require('fs')
 
@@ -36,61 +30,6 @@ const fs = require('fs')
 // for network see the viem chains
 // Important: The custom RPC URL in the .env must support createAccessList (or the viem default rpc url)
 // npm run write-review -- --rateProviderAddress <address> --network <network> --rateProviderAsset <asset> --rpcUrl <rpcUrl>
-
-// Mapping of chain names to registry keys
-const chainNameToRegistryKey: { [key: string]: string } = {
-    'Arbitrum One': 'arbitrum',
-    mainnet: 'ethereum',
-    'OP Mainnet': 'optimism',
-    'Polygon zkEVM': 'zkevm',
-    'Mode Mainnet': 'mode',
-}
-
-async function createCustomAgents(rateProvider: Address, chain: Chain) {
-    // get the relevant information from the registry
-    const registryPath = path.join(__dirname, '../rate-providers/registry.json')
-    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'))
-
-    const registryKey = chainNameToRegistryKey[chain.name] || chain.name.toLowerCase()
-    const rateProviderData = registry[registryKey][rateProvider]
-
-    const upgradeableComponents = rateProviderData.upgradeableComponents.map(
-        (component: { entrypoint: any }) => component.entrypoint,
-    )
-
-    const hypernativeApi = new HypernativeApi(
-        chain,
-        process.env.HYPERNATIVE_CLIENT_ID || '',
-        process.env.HYPERNATIVE_CLIENT_SECRET || '',
-    )
-
-    await hypernativeApi.createCustomAgentRateDeviation({
-        chain,
-        ruleString: `On ${chain.name}: when ${rateProvider}: getRate().uint256 changed by 10% in less than 10 blocks.\nSample every 5 blocks`,
-        contractAddress: rateProvider,
-        contractAlias: rateProvider,
-        agentName: `${rateProvider.slice(-4)}rate-deviation`,
-        rateProvider: rateProvider,
-    })
-
-    await hypernativeApi.createCustomAgentUpgrade({
-        chain,
-        ruleString: `On ${chain.name}: when ${upgradeableComponents.map((component: string) => component).join(' or ')}: Upgraded(indexed address implementation)}`,
-        contractAddress: upgradeableComponents,
-        contractAlias: upgradeableComponents.map((component: string) => component).join(' or '),
-        agentName: `${rateProvider.slice(-4)}-upgrade`,
-        rateProvider: rateProvider,
-    })
-
-    await hypernativeApi.createCustomAgentRateRevert({
-        chain,
-        ruleString: `On ${chain.name}: when ${rateProvider}: getRate() reverts`,
-        contractAddress: rateProvider,
-        contractAlias: rateProvider,
-        agentName: `${rateProvider.slice(-4)}rate-revert`,
-        rateProvider: rateProvider,
-    })
-}
 
 // Parse command-line arguments using yargs
 async function main() {
@@ -188,7 +127,7 @@ async function main() {
     await writeReviewAndUpdateRegistry(rateProviderAddress, network, rateProviderAsset, argv.rpcUrl)
 
     // the registry file has been updated. All relevant information can be read from there and don't need to be passed as arguments
-    // await createCustomAgents(rateProviderAddress, network)
+    await createCustomAgents(rateProviderAddress, network)
 }
 
 main().catch((error) => {

@@ -42,6 +42,8 @@ export async function writeReviewAndUpdateRegistry(
     network: Chain,
     rateProviderAsset: Address,
     rpcUrl: string,
+    rateProviderDocs?: string,
+    linkToAudits?: string,
 ): Promise<{ rateProvider: Address }> {
     const service = new RateProviderDataService(rateProviderAddress, network)
 
@@ -77,6 +79,8 @@ export async function writeReviewAndUpdateRegistry(
             '{{chainExplorer}}',
             `${service.chain.blockExplorers?.default.url}/address/${service.rateProvider}` || '',
         )
+        .replace('{{linkToAudits}}', linkToAudits || '')
+        .replace('{{rateProviderDocs}}', rateProviderDocs || '')
         .replace('{{hasInterface}}', templateData.hasInterface)
         .replace('{{isScale18}}', templateData.isScale18)
         .replace('{{isUpgradeable}}', templateData.isUpgradeable)

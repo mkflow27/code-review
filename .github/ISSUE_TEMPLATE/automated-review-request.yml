@@ -48,7 +48,7 @@ body:
       placeholder: The address of the contract
     validations:
       required: true
-  - type: textarea
+  - type: input
     id: more-links
     attributes:
       label: audits

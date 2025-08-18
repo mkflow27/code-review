@@ -1,4 +1,4 @@
-import { writeReviewAndUpdateRegistry as writeERC4626ReviewAndUpdateRegistry } from './write-erc4626-review'
+import { writeReviewAndUpdateRegistry as writeERC4626ReviewAndUpdateRegistry } from '../src/utils/write-erc4626-review'
 import { writeReviewAndUpdateRegistry } from '../src/utils/write-rp-review'
 import { createCustomAgents } from 'utils'
 

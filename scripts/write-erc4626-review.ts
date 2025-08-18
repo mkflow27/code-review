@@ -20,17 +20,14 @@ import {
 } from 'viem/chains'
 
 import { hyperEvm } from '../src/utils/customChains'
-
+import { writeReviewAndUpdateRegistry } from 'utils/write-erc4626-review'
 
 dotenv.config()
-
 
 // to use this script use the command below
 // for network see the viem chains
 // Important: The custom RPC URL in the .env must support createAccessList (or the viem default rpc url)
 // npm run write-erc4626-review -- --erc4626Address <address> --network avalanche --rpcUrl <custom rpc url>
-
-
 
 // Parse command-line arguments using yargs
 async function main() {

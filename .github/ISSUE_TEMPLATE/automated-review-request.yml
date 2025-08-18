@@ -91,6 +91,7 @@ body:
       required: false
   - type: input
     id: fork-tests
+    attributes:
       label: Link to passing fork tests
       description: Please provide a link to the fork tests that pass for the ERC4626 vault
       placeholder: https://github.com/balancer/balancer-v3-erc4626-tests/blob/main/test/mainnet/ERC4626MainnetAaveUSDe.t.sol

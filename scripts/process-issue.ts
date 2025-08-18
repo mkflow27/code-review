@@ -120,7 +120,7 @@ async function processIssue(issueJson: string) {
             issueData.erc4626_asset_contract_audits, //link to audits
             issueData.erc4626_asset_contract_documentation, //written docs excerpt
             issueData.link_to_passing_fork_tests, // are fork tests passing?
-            issueData.erc4626_asset_contract_documentation, //link to passing fork tests
+            issueData.link_to_passing_fork_tests, //link to passing fork tests
             issueData.additional_contract_information.selected.includes('If so, is the Buffer already initialized') &&
                 issueData.link_to_passing_fork_tests
                 ? true
